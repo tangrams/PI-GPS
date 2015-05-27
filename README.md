@@ -58,7 +58,8 @@ Then, and just to make sure this is working, compile tangram and then run it.
 
 ```bash
 export CXX=/usr/bin/g++-4.8
-cd build                                                                       cmake ..
+cd build
+cmake ..
 cd bin
 tangram -m
 ```
