@@ -1,16 +1,46 @@
 
+![](imgs/ui.gif)
+
 # Make your own GPS device with Tangram-es and RaspberryPi
 
 A couple of month ago the nice folks of RaspberryPi publish a [blog post](https://www.raspberrypi.org/tangram-an-open-source-map-rendering-library/) about [Tangram-ES](https://github.com/tangrams/tangram-es) our Native 2D/3D Maps Render Engine running on their hardware. The feedback was great and people seams to be very excited of start using it for their own projects.
 
 Tangram-ES is a WIP map engine in C++ and openGL ES 2.0, so could be a little intimidatory to start from scratch. That's way we thought in this small weekend project to put the ball running and ignites some ideas on the community.
 
-In this github repository
+In [this github repository](https://github.com/tangrams/PI-GPS) you will find:
 
+- A 3D model to mount together a: RaspberryPi A+/B+, [Adafruit’s touch HDMI 5’’800x480 ](https://www.adafruit.com/product/2260), [Ultimate GPS Raspberry PI HAT](https://www.adafruit.com/products/2324), [Lithium Ion Batter](https://www.adafruit.com/products/353) and [PowerBoost 1000 Charger](https://www.adafruit.com/products/2465).
 
-## Install Tangram-ES on your RaspberryPi
+- A source code to run Tangram-es with a nice little graphic interface to move around, rotate and zoom with a touch only screen.
 
-Let’s start by cloning this repository, [Tangram-ES](https://github.com/tangrams/tangram-es) submodule and installing everything you need to compile it.
+- An explanation on how you can modify ```tangram.cpp``` of Tangram-ES to load tiles locally.
+
+## Hardware
+
+Beside your RaspberryPi I’m using the following components to make a stand alone device:
+
+- [HDMI 5’’800x480 Touch Screen](https://www.adafruit.com/product/2260)
+
+- [Ultimate GPS Raspberry PI HAT](https://www.adafruit.com/products/2324)
+
+- [Lithium Ion Batter](https://www.adafruit.com/products/353) 
+
+- [PowerBoost 1000 Charger](https://www.adafruit.com/products/2465)
+
+Which are hold together with the 3D-printed mounting station located on the file: ```parts/rpi-screen-mount.stl```.
+
+![](imgs/mount.png)
+
+Once you put everything together should look something like this:
+
+![](imgs/front.jpg)
+![](imgs/back.jpg)
+
+## Compile and install Tangram-ES with a nice UI for RaspberryPi
+
+Now let’s jump to the code aspect of this project.
+
+First we need to clone this repository in your raspberryPi and install some dependences to compile everything.
 
 ```bash
 sudo apt-get update
@@ -31,19 +61,17 @@ cd bin
 tangram -m
 ```
 
-You can exit with pressing `q`.
-
 *Note:* that we are running tangram with the ```-m``` flag to display the mouse
 
 ## Modify Tangram-ES to fetch tiles locally
 
-Sometimes for DIY project, getting fast internet access could be a problem, for example if you are making a DIY GPS for your car. In this post we are going to share how you can set your Tangram-ES app to use pre-download tiles. Enjoy!
+Getting fast internet access directly to your RaspberryPi could be a problem, specially if you are planning to use this GPS devices in your bicycle. Let’s see what you need to do to download the map tiles locally so you don’t need an internet access to use Tangram-Es.
 
-Now that we have tangram-es installed and tested is time for us to make some changes that will make tangram search for local files instead of fetching them from a server.
+We install Tangram-ES and tested it in the previous section. Now is time for us to make some changes that will make Tangram-ES search for local files instead of fetching them from a server.
 
 With this changes tangram will search for tiles inside the ```tiles/``` directory.
 
-For that open ```core/src/tangram.cpp``` in you favorite text editor.
+For that open ```~/PI-GPS/tangram-es/core/src/tangram.cpp``` in you favorite text editor.
 
 ```bash
 cd ~/PI-GPS/tangram-es
@@ -85,9 +113,9 @@ Then add at top of the file this includes…
 Save, exit and recompile to apply this changes.
 
 ```bash
-cd ~/tangram-es
+cd ~/PI-GPS/
 export CXX=/usr/bin/g++-4.8
-make rpi
+make
 ```
 
 ## Get the tiles of a town/city/region from OpenStreetMap 
@@ -105,7 +133,7 @@ sudo pip install requests
 Then download Peter’s script in the directory where tangram was compile
 
 ```bash
-cd ~/tangram-es/build/rpi/bin
+cd ~/PI-GPS/build/bin
 wget https://raw.githubusercontent.com/tangrams/landgrab/master/landgrab.py
 ```
 
@@ -144,7 +172,7 @@ This will take a while
 Well done! Everything is ready to unplug your internet source and run tangram! 
 
 ```bash
-cd ~/tangram-es/build/rpi/bin
+cd ~/PI-GPS/build/bin
 ./tangram -m
 ```
 
