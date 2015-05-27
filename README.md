@@ -61,7 +61,7 @@ export CXX=/usr/bin/g++-4.8
 cd build
 cmake ..
 cd bin
-tangram -m
+./pi-gps -m
 ```
 
 *Note:* that we are running tangram with the ```-m``` flag to display the mouse
@@ -176,7 +176,7 @@ Well done! Everything is ready to unplug your internet source and run tangram!
 
 ```bash
 cd ~/PI-GPS/build/bin
-./tangram -m
+./pi-gps -m
 ```
 
 I hope you are excited to about all the possibilities of having cool 3D maps on your projects. Seen us your opinions, feedback or photos of your projects!
