@@ -89,25 +89,25 @@ Then add at top of the file this includes…
 
 ```cpp
 // Create a tileManager
-				…
+…
 
-        if (!m_tileManager) {
-            m_tileManager = TileManager::GetInstance();
+if (!m_tileManager) {
+    m_tileManager = TileManager::GetInstance();
 
-            // Pass references to the view and scene into the tile manager
-            m_tileManager->setView(m_view);
-            m_tileManager->setScene(m_scene);
+    // Pass references to the view and scene into the tile manager
+    m_tileManager->setView(m_view);
+    m_tileManager->setScene(m_scene);
 
-            // Fetch Json local files
-            char result[ FILENAME_MAX ];
-            getcwd(result, FILENAME_MAX);
-            std::unique_ptr<DataSource> dataSource(new GeoJsonSource());
-            dataSource->setUrlTemplate("file://"+std::string(result)+"/tiles/[z]-[x]-[y].json");
+    // Fetch Json local files
+    char result[ FILENAME_MAX ];
+    getcwd(result, FILENAME_MAX);
+    std::unique_ptr<DataSource> dataSource(new GeoJsonSource());
+    dataSource->setUrlTemplate("file://"+std::string(result)+"/tiles/[z]-[x]-[y].json");
 
-            m_tileManager->addDataSource(std::move(dataSource));
-        }
+    m_tileManager->addDataSource(std::move(dataSource));
+}
 
-				…
+…
 ```
 
 Save, exit and recompile to apply this changes.
@@ -155,8 +155,8 @@ For example:
 **Note**: If you choose another city that is not Manhattan you have to change it on the ```tangram.cpp``` to load initially load the map in that specific location where is said around line 44:
 
 ```cpp
-		// Move the view to coordinates in Manhattan so we have something interesting to test
-		glm::dvec2 target = m_view->getMapProjection().LonLatToMeters(glm::dvec2(-74.00796, 40.70361));
+// Move the view to coordinates in Manhattan so we have something interesting to test
+glm::dvec2 target = m_view->getMapProjection().LonLatToMeters(glm::dvec2(-74.00796, 40.70361));
 ```
 
 Once we choose a place that match the position tangram will start fetching tiles is time to grab all the tiles that we will need. For that we will use the python script we download with given OSM ID and the zoom level we are interested (in our case all of them from 1 to 18 ).
