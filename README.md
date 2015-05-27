@@ -1,18 +1,7 @@
-# Openness
-
-The collective effort of a community working with open data is preserve by the transparency of open software. But openSource and openData is as open as the technology require to access to it. 
-
-On Mapzen we are working on a native version of our vector map 2D/3D render, Tangram (made on C++ / openGL ES 2.0) that can be compile and run on the inexpensive RaspberryPi (less 35 U$D).
-
-This not only make us wonder about maps apply to the Internet of things, but more importantly lower the bar to access to open data like OpenStreetMaps for a bigger .
-
-The following is an example project on how to use Tangram ES to make a DIY GPS devices using a RaspberryPi and GPS module.
 
 ## Making your own GPS device
 
-A couple of month ago the nice folks of RaspberryPi publish a [blog post](https://www.raspberrypi.org/tangram-an-open-source-map-rendering-library/) about [Tangram-ES](https://github.com/tangrams/tangram-es) our Native 2D/3D Maps Render Engine running on their hardware. Here is the video we made for them:
-
-<iframe src=“https://player.vimeo.com/video/120092583” width=“500” height=“281” frameborder=“0” webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+A couple of month ago the nice folks of RaspberryPi publish a [blog post](https://www.raspberrypi.org/tangram-an-open-source-map-rendering-library/) about [Tangram-ES](https://github.com/tangrams/tangram-es) our Native 2D/3D Maps Render Engine running on their hardware.
 
 The feedback was great and a lot of people start using it for their projects. 
 
@@ -20,13 +9,15 @@ Sometimes for DIY project, getting fast internet access could be a problem, for 
 
 ## Install Tangram-ES on your RaspberryPi
 
-Let’s start by installing everything you need to compile [Tangram-ES](https://github.com/tangrams/tangram-es)
+Let’s start by cloning this repository, [Tangram-ES](https://github.com/tangrams/tangram-es) submodule and installing everything you need to compile it.
 
 ```bash
 sudo apt-get update
 sudo apt-get install cmake libcurl4-openssl-dev g++-4.8
 cd ~
-git clone https://github.com/tangrams/tangram-es.git
+git clone https://github.com/tangrams/PI-GPS.git
+cd PI_GPS
+git submodule init && git submodule update
 cd tangram-es
 git submodule init && git submodule update
 ```
