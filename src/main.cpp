@@ -17,6 +17,8 @@
 
 #include <iostream>
 #include "hud/hud.h"
+#include "gps.h"
+#include <unistd.h>
 Hud m_hud;
 
 #define KEY_ESC      113    // q
@@ -29,6 +31,7 @@ Hud m_hud;
 
 struct timeval tv;
 unsigned long long timePrev, timeStart; 
+static double delta;
 
 static bool bUpdate = true;
 
@@ -61,6 +64,8 @@ int main(int argc, char **argv){
     gettimeofday(&tv, NULL);
     timeStart = timePrev = (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
 
+    bool bGPS = false;
+    double minDelta = 1.0;
     while (bUpdate) {
         updateGL();
 
@@ -68,7 +73,26 @@ int main(int argc, char **argv){
 
         if (getRenderRequest()) {
             setRenderRequest(false);
+            gettimeofday( &tv, NULL);
+            timePrev = (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
             newFrame();
+            gettimeofday( &tv, NULL);
+            unsigned long long timeNow = (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
+            delta = ((double)(timeNow - timePrev))*0.001;
+
+            if (delta < minDelta){
+                minDelta = delta;
+            }
+        } else {
+
+            if (!bGPS) {
+                float lat = 0.0;
+                float lon = 0.0; 
+                bGPS = getLocation(&lat,&lon);
+            } else {
+                usleep(1000000.0*minDelta);
+            }
+            
         }
     }
     
@@ -83,16 +107,9 @@ void setup() {
 }
 
 void newFrame() {
-
-    // Update
-    gettimeofday( &tv, NULL);
-    unsigned long long timeNow = (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
-    double delta = ((double)timeNow - (double)timePrev)*0.001;
-
-    //logMsg("New frame (delta %d msec)\n",delta);
+    logMsg("New frame (delta %f msec)\n",delta);
 
     Tangram::update(delta);
-    timePrev = timeNow;
 
     // Render        
     Tangram::render(); 

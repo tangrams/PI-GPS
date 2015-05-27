@@ -145,19 +145,32 @@ void getLocation(int _port_fd, float *lat, float *lon){
     }
 }
 
-bool getLocation(float *lat, float *lon){
+bool getLocation(float *_lat, float *_lon){
     static int fd = -1;
+    static float lat = 0.0;
+    static float lon = 0.0;
 
     if (fd<0) {
         fd = openPort("/dev/ttyAMA0");
     }
 
     if (fd>=0) {
-        getLocation(fd,lat,lon);
-        if (*lat == 0.0 && *lon == 0.0){
-            return false;
-        } else {
+        float tmpLat = 0.0;
+        float tmpLon = 0.0;
+
+        getLocation(fd,&tmpLat,&tmpLon);
+
+        if (tmpLat != 0.0 && tmpLon != 0.0){
+            lat = tmpLat;
+            lon = tmpLon;
+        }
+
+        if  (lat != 0.0 && lon != 0.0) { 
+            *_lat = lat;
+            *_lon = lon;
             return true;
+        } else {
+            return false;
         }
     } else {
         return false;

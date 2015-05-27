@@ -77,6 +77,7 @@ void Hud::cursorClick(float _x, float _y, int _button){
         if (getLocation(&lat,&lon)){
             // GO TO CENTER
             std::cout << "GO TO " << lat << " lat, " << lon << " lon"<< std::endl;
+            Tangram::setViewPosition(lon,lat);
         } else {
             std::cout << "NO FIX GPS" << std::endl;  
         }
@@ -133,11 +134,11 @@ void Hud::draw(){
     }
     
     // Zoom
-    m_zoom.zoom = Tangram::getZoom();
+    m_zoom.zoom = Tangram::getViewZoom();
     m_zoom.draw();
     
     // Rotation
-    m_rot.angle = Tangram::getRotation();
+    m_rot.angle = Tangram::getViewRotation();
     m_rot.draw();
 
     // Center button
