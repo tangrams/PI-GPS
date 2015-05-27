@@ -27,6 +27,8 @@ Beside your RaspberryPi I’m using the following components to make a stand alo
 
 - [PowerBoost 1000 Charger](https://www.adafruit.com/products/2465)
 
+![](imgs/hardware.jpg)
+
 Which are hold together with the 3D-printed mounting station located on the file: ```parts/rpi-screen-mount.stl```.
 
 ![](imgs/mount.png)
