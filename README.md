@@ -1,11 +1,12 @@
 
-## Making your own GPS device
+# Make your own GPS device with Tangram-es and RaspberryPi
 
-A couple of month ago the nice folks of RaspberryPi publish a [blog post](https://www.raspberrypi.org/tangram-an-open-source-map-rendering-library/) about [Tangram-ES](https://github.com/tangrams/tangram-es) our Native 2D/3D Maps Render Engine running on their hardware.
+A couple of month ago the nice folks of RaspberryPi publish a [blog post](https://www.raspberrypi.org/tangram-an-open-source-map-rendering-library/) about [Tangram-ES](https://github.com/tangrams/tangram-es) our Native 2D/3D Maps Render Engine running on their hardware. The feedback was great and people seams to be very excited of start using it for their own projects.
 
-The feedback was great and a lot of people start using it for their projects. 
+Tangram-ES is a WIP map engine in C++ and openGL ES 2.0, so could be a little intimidatory to start from scratch. That's way we thought in this small weekend project to put the ball running and ignites some ideas on the community.
 
-Sometimes for DIY project, getting fast internet access could be a problem, for example if you are making a DIY GPS for your car. In this post we are going to share how you can set your Tangram-ES app to use pre-download tiles. Enjoy!
+In this github repository
+
 
 ## Install Tangram-ES on your RaspberryPi
 
@@ -16,18 +17,18 @@ sudo apt-get update
 sudo apt-get install cmake libcurl4-openssl-dev g++-4.8
 cd ~
 git clone https://github.com/tangrams/PI-GPS.git
-cd PI_GPS
-git submodule init && git submodule update
-cd tangram-es
-git submodule init && git submodule update
+cd PI-GPS
+git submodule update --init --recursive
+mkdir build
 ```
 
 Then, and just to make sure this is working, compile tangram and then run it.
 
 ```bash
 export CXX=/usr/bin/g++-4.8
-make rpi
-../tangram -m
+cd build                                                                       cmake ..
+cd bin
+tangram -m
 ```
 
 You can exit with pressing `q`.
@@ -36,6 +37,8 @@ You can exit with pressing `q`.
 
 ## Modify Tangram-ES to fetch tiles locally
 
+Sometimes for DIY project, getting fast internet access could be a problem, for example if you are making a DIY GPS for your car. In this post we are going to share how you can set your Tangram-ES app to use pre-download tiles. Enjoy!
+
 Now that we have tangram-es installed and tested is time for us to make some changes that will make tangram search for local files instead of fetching them from a server.
 
 With this changes tangram will search for tiles inside the ```tiles/``` directory.
@@ -43,7 +46,7 @@ With this changes tangram will search for tiles inside the ```tiles/``` director
 For that open ```core/src/tangram.cpp``` in you favorite text editor.
 
 ```bash
-cd ~/tangram-es
+cd ~/PI-GPS/tangram-es
 vim core/src/tangram.cpp
 ```
 
