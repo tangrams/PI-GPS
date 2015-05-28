@@ -9,11 +9,11 @@ Tangram-ES is a work-in-progress map engine written in C++ and openGL ES 2.0, so
 
 In [this github repository](https://github.com/tangrams/PI-GPS) you will find:
 
-- A 3D-printable model to mount together a RaspberryPi A+/B+, [Adafruit’s touch HDMI 5’’ 800x480 ](https://www.adafruit.com/product/2260), [Ultimate GPS Raspberry PI HAT](https://www.adafruit.com/products/2324), [Lithium Ion Battery](https://www.adafruit.com/products/353) and [PowerBoost 1000 Charger](https://www.adafruit.com/products/2465).
+- A 3D-printable model to mount together a RaspberryPi A+/B+, [Adafruit’s touch HDMI 5’’ 800x480 ](https://www.adafruit.com/product/2260), [Ultimate GPS Raspberry PI HAT](https://www.adafruit.com/products/2324), [Lithium Ion Battery](https://www.adafruit.com/products/353) and [PowerBoost 1000 Charger](https://www.adafruit.com/products/2465)
 
-- Source code to run Tangram-es with a nice little graphical interface to move, rotate and zoom a map with a touch-only screen.
+- Source code to run Tangram-es with a nice little graphical interface to move, rotate and zoom a map with a touch-only screen
 
-- An explanation on how you can modify ```tangram.cpp``` of Tangram-ES to load tiles locally.
+- Instructions for configuring Tangram-ES to load tiles locally using data for your own city or region
 
 ## Hardware
 
@@ -67,11 +67,11 @@ cd bin
 
 *Note:* we are running tangram with the ```-m``` flag to display the mouse.
 
-## Modify Tangram-ES to fetch tiles locally
+## Configure Tangram-ES to fetch tiles locally
 
 Getting fast internet access to your RaspberryPi could be a problem, especially if you are planning to use this GPS device on your bicycle. Let’s see what you need to do to download the map tiles locally making your map network-independent.
 
-We installed Tangram-ES and tested it in the previous section. Now is time for us to make some changes so Tangram-ES will search for local files instead of fetching them from a server. Lucky us, we just need to change that form the configuration YAML file. As [the web version of Tangram](https://github.com/tangrams/tangram), this engine is super flexible and you can customize most of it from this file.   
+We installed Tangram-ES and tested it in the previous section. Now is time for us to make some changes so Tangram-ES will search for local files instead of fetching them from a server. Lucky us, we just need to change that from the configuration YAML file. As [the web version of Tangram](https://github.com/tangrams/tangram), this engine is super flexible and you can customize most of it from this file.   
 
 Go and open the ```~/PI-GPS/tangram-es/core/resources/config.yaml``` file. And edit the following line:
 
@@ -120,7 +120,7 @@ For example:
 * Buenos Aires (1224652)
 * London (65606)
 * Manhattan (3954665)
-* New YorkCity (175905)
+* New York City (175905)
 * Paris (7444)
 * Rio de Janeiro (2697338)
 * Rome (41485)
@@ -128,14 +128,16 @@ For example:
 * Tokyo (4479121)
 * Tucson (253824)
 
-**Note**: If you choose a city other than Manhattan you have to change the initial coordinates in ```~/PI-GPS/tangram-es/core/src/tangram.cpp``` so tangram knows where to center the map (around line 44):
+**Note**: To change the initial coordinates of the map, open ```~/PI-GPS/tangram-es/core/resources/config.yaml``` again and add a line to the camera block so that it looks like this:
 
-```cpp
-// Move the view to coordinates in Manhattan so we have something interesting to test
-glm::dvec2 target = m_view->getMapProjection().LonLatToMeters(glm::dvec2(-74.00796, 40.70361));
+```yaml
+cameras:
+    camera1:
+        position: [-74.00976, 40.705327]
+        type: perspective
 ```
 
-Once we choose a place, tangram will start fetching the vector tiles that we will need. For that we will use the python script we downloaded with the given OSM ID and the zoom level we are interested (in our case all of them are from 1 to 18).
+Substitute your own longitude and latitude in the position values. Once we choose a place, tangram will start fetching the vector tiles that we will need. For that we will use the python script we downloaded with the given OSM ID and the zoom level we are interested (in our case all of them are from 1 to 18).
 
 ```bash
 python landgrab.py 3954665 1-18
