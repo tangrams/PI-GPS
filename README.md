@@ -86,9 +86,9 @@ So it looks like:
 
 ```yaml
 sources:
-    local:
+    osm:
         type: GeoJSONTiles
-        url:  file://home/pi/PI-GPS/build/bin/tiles/{z}-{x}-{y}.json
+        url:  file:///home/pi/PI-GPS/build/bin/tiles/{z}-{x}-{y}.json
 ```
 
 With these changes, tangram will search for tiles inside the ```tiles/``` directory.
