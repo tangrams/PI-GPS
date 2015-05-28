@@ -117,7 +117,7 @@ if (!m_tileManager) {
 Save, exit and recompile to apply these changes.
 
 ```bash
-cd ~/PI-GPS/
+cd ~/PI-GPS/build/
 export CXX=/usr/bin/g++-4.8
 make
 ```
