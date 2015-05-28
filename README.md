@@ -71,56 +71,28 @@ cd bin
 
 Getting fast internet access to your RaspberryPi could be a problem, especially if you are planning to use this GPS device on your bicycle. Let’s see what you need to do to download the map tiles locally making your map network-independent.
 
-We installed Tangram-ES and tested it in the previous section. Now is time for us to make some changes so Tangram-ES will search for local files instead of fetching them from a server.
+We installed Tangram-ES and tested it in the previous section. Now is time for us to make some changes so Tangram-ES will search for local files instead of fetching them from a server. Lucky us, we just need to change that form the configuration YAML file. As [the web version of Tangram](https://github.com/tangrams/tangram), this engine is super flexible and you can customize most of it from this file.   
+
+Go and open the ```~/PI-GPS/tangram-es/core/resources/config.yaml``` file. And edit the following line:
+
+```yaml
+sources:
+    osm:
+        type: MVT
+        url:  http://vector.mapzen.com/osm/all/{z}/{x}/{y}.mvt
+``` 
+
+So it looks like:
+
+```yaml
+sources:
+    local:
+        type: GeoJSONTiles
+        url:  file://home/pi/PI-GPS/build/bin/tiles/{z}-{x}-{y}.json
+```
 
 With these changes, tangram will search for tiles inside the ```tiles/``` directory.
 
-Open ```~/PI-GPS/tangram-es/core/src/tangram.cpp``` in you favorite text editor:
-
-```bash
-cd ~/PI-GPS/tangram-es
-vim core/src/tangram.cpp
-```
-
-Then add at top of the file these includes…
-
-```cpp
-#include <string>
-#include <unistd.h>
-```
-
-…and at the ```void initialize()``` function where the ```TileManager``` is set, replace the text to make it look like this:
-
-```cpp
-// Create a tileManager
-…
-
-if (!m_tileManager) {
-    m_tileManager = TileManager::GetInstance();
-
-    // Pass references to the view and scene into the tile manager
-    m_tileManager->setView(m_view);
-    m_tileManager->setScene(m_scene);
-
-    // Fetch Json local files
-    char result[ FILENAME_MAX ];
-    getcwd(result, FILENAME_MAX);
-    std::unique_ptr<DataSource> dataSource(new GeoJsonSource());
-    dataSource->setUrlTemplate("file://"+std::string(result)+"/tiles/[z]-[x]-[y].json");
-
-    m_tileManager->addDataSource(std::move(dataSource));
-}
-
-…
-```
-
-Save, exit and recompile to apply these changes.
-
-```bash
-cd ~/PI-GPS/build/
-export CXX=/usr/bin/g++-4.8
-make
-```
 
 ## Get the tiles of a town/city/region from OpenStreetMap 
 
@@ -156,7 +128,7 @@ For example:
 * Tokyo (4479121)
 * Tucson (253824)
 
-**Note**: If you choose a city other than Manhattan you have to change the coordinates in ```tangram.cpp``` so tangram knows where to center the map (around line 44):
+**Note**: If you choose a city other than Manhattan you have to change the initial coordinates in ```~/PI-GPS/tangram-es/core/src/tangram.cpp``` so tangram knows where to center the map (around line 44):
 
 ```cpp
 // Move the view to coordinates in Manhattan so we have something interesting to test
