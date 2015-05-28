@@ -60,6 +60,7 @@ Then, just to make sure it is working, compile tangram and then run it.
 export CXX=/usr/bin/g++-4.8
 cd build
 cmake ..
+make
 cd bin
 ./pi-gps -m
 ```
