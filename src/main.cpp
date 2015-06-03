@@ -107,7 +107,7 @@ void setup() {
 }
 
 void newFrame() {
-    logMsg("New frame (delta %f msec)\n",delta);
+    // logMsg("New frame (delta %f msec)\n",delta);
 
     Tangram::update(delta);
 
@@ -144,8 +144,8 @@ void onKeyPress(int _key) {
         case KEY_ESC:
             bUpdate = false;
             break;
-        default:
-            logMsg(" -> %i\n",_key);
+        // default:
+            // logMsg(" -> %i\n",_key);
     }
     requestRender();
 }
