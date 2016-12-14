@@ -12,7 +12,7 @@ typedef Tangram::Mesh<LineVertex> HudMesh;
 
 inline std::shared_ptr<HudMesh> getCrossMesh(float width){
     
-    std::shared_ptr<Tangram::VertexLayout> vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new VertexLayout({
+    std::shared_ptr<Tangram::VertexLayout> vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new Tangram::VertexLayout({
         {"a_position", 2, GL_FLOAT, false, 0}
     }));
     std::vector<LineVertex> vertices;
@@ -35,7 +35,7 @@ inline std::shared_ptr<HudMesh> getCrossMesh(float width){
 
 inline std::shared_ptr<HudMesh> getVerticalRulerMesh(float min, float max, float step, float width){
     
-    std::shared_ptr<Tangram::VertexLayout> vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new VertexLayout({
+    std::shared_ptr<Tangram::VertexLayout> vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new Tangram::VertexLayout({
         {"a_position", 2, GL_FLOAT, false, 0}
     }));
     std::vector<LineVertex> vertices;
@@ -87,7 +87,7 @@ inline std::shared_ptr<HudMesh> getCircularRulerMesh(float radius, int nLines, f
 
 inline std::shared_ptr<HudMesh> getTriangle(const glm::vec2& pos, float width, float angle = 0){
     
-    std::shared_ptr<VertexLayout> vertexLayout = std::shared_ptr<VertexLayout>(new VertexLayout({
+    std::shared_ptr<Tangram::VertexLayout> Tangram::vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new Tangram::VertexLayout({
         {"a_position", 2, GL_FLOAT, false, 0}
     }));
     std::vector<LineVertex> vertices;
