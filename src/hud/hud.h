@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/shaderProgram.h"
+#include "gl/shaderProgram.h"
 
 #include "shapes.h"
 #include "glm/glm.hpp"

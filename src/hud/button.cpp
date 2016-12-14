@@ -5,7 +5,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "util/vertexLayout.h"
+#include "gl/vertexLayout.h"
 #include "util/geom.h"
 
 void Button::init(){

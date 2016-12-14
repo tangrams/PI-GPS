@@ -1,18 +1,18 @@
 #pragma once
 
 #include "glm/glm.hpp"
-#include "util/typedMesh.h"
+#include "gl/mesh.h"
 #include "util/geom.h"
 
 struct LineVertex {
     GLfloat x;
     GLfloat y;
 };
-typedef TypedMesh<LineVertex> HudMesh;
+typedef Tangram::Mesh<LineVertex> HudMesh;
 
 inline std::shared_ptr<HudMesh> getCrossMesh(float width){
     
-    std::shared_ptr<VertexLayout> vertexLayout = std::shared_ptr<VertexLayout>(new VertexLayout({
+    std::shared_ptr<Tangram::VertexLayout> vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new VertexLayout({
         {"a_position", 2, GL_FLOAT, false, 0}
     }));
     std::vector<LineVertex> vertices;
@@ -35,7 +35,7 @@ inline std::shared_ptr<HudMesh> getCrossMesh(float width){
 
 inline std::shared_ptr<HudMesh> getVerticalRulerMesh(float min, float max, float step, float width){
     
-    std::shared_ptr<VertexLayout> vertexLayout = std::shared_ptr<VertexLayout>(new VertexLayout({
+    std::shared_ptr<Tangram::VertexLayout> vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new VertexLayout({
         {"a_position", 2, GL_FLOAT, false, 0}
     }));
     std::vector<LineVertex> vertices;
@@ -61,7 +61,7 @@ inline std::shared_ptr<HudMesh> getVerticalRulerMesh(float min, float max, float
 
 inline std::shared_ptr<HudMesh> getCircularRulerMesh(float radius, int nLines, float width){
     
-    std::shared_ptr<VertexLayout> vertexLayout = std::shared_ptr<VertexLayout>(new VertexLayout({
+    std::shared_ptr<Tangram::VertexLayout> vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new Tangram::VertexLayout({
         {"a_position", 2, GL_FLOAT, false, 0}
     }));
     std::vector<LineVertex> vertices;
