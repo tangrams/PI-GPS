@@ -262,6 +262,10 @@ void initGL(int argc, char **argv){
         EGL_GREEN_SIZE, 8,
         EGL_BLUE_SIZE, 8,
         EGL_ALPHA_SIZE, 8,
+        EGL_SAMPLE_BUFFERS, 1,
+        EGL_SAMPLES, 4,
+        EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+        EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
         EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
         EGL_DEPTH_SIZE, 16,
         EGL_NONE
@@ -332,10 +336,6 @@ void initGL(int argc, char **argv){
                 viewport.y = screen_height/2-screen_width/2;
             }
             viewport.z = viewport.w = MIN(screen_width,screen_height);
-        } else if ( std::string(argv[i]) == "-l" || 
-                    std::string(argv[i]) == "--life-coding" ){
-            viewport.x = viewport.z-500;
-            viewport.z = viewport.w = 500;
         }
     }
 
@@ -371,10 +371,6 @@ void initGL(int argc, char **argv){
     result = eglMakeCurrent(display, surface, surface, context);
     assert(EGL_FALSE != result);
     check();
-
-    // Set background color and clear buffers
-    // glClearColor(0.15f, 0.25f, 0.35f, 1.0f);
-    // glClear( GL_COLOR_BUFFER_BIT );
 
     setWindowSize(viewport.z,viewport.w);
     mouse.x = viewport.z*0.5;

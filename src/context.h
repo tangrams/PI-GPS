@@ -1,6 +1,7 @@
 #pragma once
 
-#include "gl.h"
+#include "platform_gl.h"
+#undef countof
 #include "glm/glm.hpp"
 
 // GL Context

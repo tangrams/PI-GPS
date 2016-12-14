@@ -40,6 +40,11 @@ find_sources_and_include_directories(
     ${PROJECT_SOURCE_DIR}/tangram-es/linux/src/urlWorker.*
     ${PROJECT_SOURCE_DIR}/tangram-es/linux/src/urlWorker.*)
 
+# add sources and include headers
+find_sources_and_include_directories(
+    ${PROJECT_SOURCE_DIR}/tangram-es/common/platform_gl.h
+    ${PROJECT_SOURCE_DIR}/tangram-es/core/common/platform_gl.cpp)
+
 # include headers for rpi-installed libraries
 include_directories(/opt/vc/include/)
 include_directories(/opt/vc/include/interface/vcos/pthreads)
@@ -63,3 +68,4 @@ endforeach()
 target_link_libraries(${EXECUTABLE_NAME} -lcurl)
 target_link_libraries(${EXECUTABLE_NAME} core)
 
+add_resources(${EXECUTABLE_NAME} "${PROJECT_SOURCE_DIR}/tangram-es/scenes")

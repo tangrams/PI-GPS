@@ -14,8 +14,11 @@
 #include "context.h"
 #include "tangram.h"
 #include "platform.h"
+#include "platform_rpi.h"
 
 #include <iostream>
+#include "glm/trigonometric.hpp"
+
 #include "hud/hud.h"
 #include "gps.h"
 #include <unistd.h>
@@ -32,12 +35,14 @@ Hud m_hud;
 struct timeval tv;
 unsigned long long timePrev, timeStart; 
 static double delta;
+i
+Tangram::Map* map = nullptr;
 
 static bool bUpdate = true;
 
 //==============================================================================
-void setup();
-void newFrame();
+void setup(int argc, char **argv);
+void newFrame(double delta);
 
 int main(int argc, char **argv){
 
@@ -54,11 +59,8 @@ int main(int argc, char **argv){
     /* Do Curl Init */
     curl_global_init(CURL_GLOBAL_DEFAULT);
     
-    // Set background color and clear buffers
-    Tangram::initialize();
-    Tangram::resize(getWindowWidth(), getWindowHeight());
-    
-    setup();
+    // Setup Tangram
+    setup(argc, argv);
 
     // Start clock
     gettimeofday(&tv, NULL);
@@ -73,46 +75,95 @@ int main(int argc, char **argv){
 
         if (getRenderRequest()) {
             setRenderRequest(false);
-            gettimeofday( &tv, NULL);
-            timePrev = (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
-            newFrame();
+            
             gettimeofday( &tv, NULL);
             unsigned long long timeNow = (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
-            delta = ((double)(timeNow - timePrev))*0.001;
+            delta = ((double)timeNow - (double)timePrev)*0.001;
+            newFrame(delta);
 
             if (delta < minDelta){
                 minDelta = delta;
             }
         } else {
-
             if (!bGPS) {
                 float lat = 0.0;
                 float lon = 0.0; 
                 bGPS = getLocation(&lat,&lon);
             } else {
                 usleep(1000000.0*minDelta);
-            }
-            
+            }       
         }
     }
+
+    if (map) {
+        delete map;
+        map = nullptr;
+    }
     
-    Tangram::teardown();
     curl_global_cleanup();
     closeGL();
     return 0;
 }
 
-void setup() {
+void setup(int argc, char **argv) {
+    int width = getWindowWidth();
+    int height = getWindowHeight();
+    float rot = 0.0f;
+    float zoom = 0.0f;
+    float tilt = 0.0f;
+    double lat = 0.0f;
+    double lon = 0.0f;
+    std::string scene = "scene.yaml";
+    
+    for (int i = 1; i < argc - 1; i++) {
+        std::string argName(argv[i]), argValue(argv[i + 1]);
+        if (argName == "-s" || argName == "--scene") {
+            scene = argValue;
+        } else if (argName == "-lat" ) {
+            lat = std::stod(argValue);
+        } else if (argName == "-lon" ) {
+            lon = std::stod(argValue);
+        } else if (argName == "-z" || argName == "--zoom" ) {
+            zoom = std::stof(argValue);
+        } else if (argName == "-w" || argName == "--width") {
+            width = std::stoi(argValue);
+        } else if (argName == "-h" || argName == "--height") {
+            height = std::stoi(argValue);
+        } else if (argName == "-t" || argName == "--tilt") {
+            tilt = std::stof(argValue);
+        } else if (argName == "-r" || argName == "--rotation") {
+            rot = std::stof(argValue);
+        }
+    }
+
+    map = new Tangram::Map();
+    map->loadSceneAsync(scene.c_str());
+    map->setupGL();
+    map->resize(width, height);
+    if (lon != 0.0f && lat != 0.0f) {
+        map->setPosition(lon,lat);
+    }
+    if (zoom != 0.0f) {
+        map->setZoom(zoom);
+    }
+    if (tilt != 0.0f) {
+        map->setTilt(glm::radians(tilt));
+    }
+    if (rot != 0.0f) {
+        map->setRotation(glm::radians(rot));
+    }
+
+    // Init the HUD
     m_hud.init();
 }
 
 void newFrame() {
-    // logMsg("New frame (delta %f msec)\n",delta);
+    // logMsg("New frame (delta %d msec)\n",delta);
 
-    Tangram::update(delta);
+    map->update(delta);
 
     // Render        
-    Tangram::render(); 
+    map->render(); 
 
     m_hud.draw();
 
