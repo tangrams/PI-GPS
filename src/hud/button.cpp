@@ -48,7 +48,7 @@ void Button::init(){
         float cornersWidth = 10.;
         float crossWidth = 5.;
 
-        std::shared_ptr<VertexLayout> vertexLayout = std::shared_ptr<VertexLayout>(new VertexLayout({
+        std::shared_ptr<Tangram::VertexLayout> vertexLayout = std::shared_ptr<Tangram::VertexLayout>(new Tangram::VertexLayout({
             {"a_position", 2, GL_FLOAT, false, 0}
         }));
         std::vector<LineVertex> vertices;
@@ -97,7 +97,7 @@ void Button::init(){
 
         std::shared_ptr<HudMesh> mesh(new HudMesh(vertexLayout, GL_LINES));
         mesh->addVertices(std::move(vertices), std::move(indices));
-        mesh->compileVertexBuffer();
+        //mesh->compileVertexBuffer();
 
         m_fixMesh = mesh;
     } 

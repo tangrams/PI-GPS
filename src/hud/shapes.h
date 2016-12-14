@@ -28,7 +28,7 @@ inline std::shared_ptr<HudMesh> getCrossMesh(float width){
 
     std::shared_ptr<HudMesh> mesh(new HudMesh(vertexLayout, GL_LINES));
     mesh->addVertices(std::move(vertices), std::move(indices));
-    mesh->compileVertexBuffer();
+    //mesh->compileVertexBuffer();
 
     return mesh;
 }
@@ -54,7 +54,7 @@ inline std::shared_ptr<HudMesh> getVerticalRulerMesh(float min, float max, float
 
     std::shared_ptr<HudMesh> mesh(new HudMesh(vertexLayout, GL_LINES));
     mesh->addVertices(std::move(vertices), std::move(indices));
-    mesh->compileVertexBuffer();
+    //mesh->compileVertexBuffer();
 
     return mesh;
 }
@@ -80,7 +80,7 @@ inline std::shared_ptr<HudMesh> getCircularRulerMesh(float radius, int nLines, f
 
     std::shared_ptr<HudMesh> mesh(new HudMesh(vertexLayout, GL_LINES));
     mesh->addVertices(std::move(vertices), std::move(indices));
-    mesh->compileVertexBuffer();
+    //mesh->compileVertexBuffer();
 
     return mesh;
 }
@@ -103,7 +103,7 @@ inline std::shared_ptr<HudMesh> getTriangle(const glm::vec2& pos, float width, f
 
     std::shared_ptr<HudMesh> mesh(new HudMesh(vertexLayout, GL_TRIANGLES));
     mesh->addVertices(std::move(vertices), std::move(indices));
-    mesh->compileVertexBuffer();
+    //mesh->compileVertexBuffer();
 
     return mesh;
 }
